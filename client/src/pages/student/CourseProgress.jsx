@@ -51,7 +51,7 @@ const CourseProgress = () => {
   const { courseDetails, progress, completed } = data.data;
   const { courseTitle } = courseDetails;
 
-  // initialze the first lecture is not exist
+  // Initialize the first lecture if not exist
   const initialLecture =
     currentLecture || (courseDetails.lectures && courseDetails.lectures[0]);
 
@@ -63,16 +63,17 @@ const CourseProgress = () => {
     await updateLectureProgress({ courseId, lectureId });
     refetch();
   };
+
   // Handle select a specific lecture to watch
   const handleSelectLecture = (lecture) => {
     setCurrentLecture(lecture);
     handleLectureProgress(lecture._id);
   };
 
-
   const handleCompleteCourse = async () => {
     await completeCourse(courseId);
   };
+
   const handleInCompleteCourse = async () => {
     await inCompleteCourse(courseId);
   };
@@ -101,11 +102,13 @@ const CourseProgress = () => {
         <div className="flex-1 md:w-3/5 h-fit rounded-lg shadow-lg p-4">
           <div>
             <video
-              src={currentLecture?.videoUrl || initialLecture.videoUrl}
+              src={currentLecture?.videoUrl || initialLecture?.videoUrl}
               controls
               className="w-full h-auto md:rounded-lg"
               onPlay={() =>
-                handleLectureProgress(currentLecture?._id || initialLecture._id)
+                handleLectureProgress(
+                  currentLecture?._id || initialLecture?._id
+                )
               }
             />
           </div>
@@ -115,10 +118,10 @@ const CourseProgress = () => {
               {`Lecture ${
                 courseDetails.lectures.findIndex(
                   (lec) =>
-                    lec._id === (currentLecture?._id || initialLecture._id)
+                    lec._id === (currentLecture?._id || initialLecture?._id)
                 ) + 1
               } : ${
-                currentLecture?.lectureTitle || initialLecture.lectureTitle
+                currentLecture?.lectureTitle || initialLecture?.lectureTitle
               }`}
             </h3>
           </div>

@@ -1,4 +1,3 @@
-// McgPr7oX7v1mMcbN
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,6 +24,7 @@ const Login = () => {
     name: "",
     email: "",
     password: "",
+    role: "student", // Default role
   });
   const [loginInput, setLoginInput] = useState({ email: "", password: "" });
 
@@ -64,17 +64,17 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if(registerIsSuccess && registerData){
-      toast.success(registerData.message || "Signup successful.")
+    if (registerIsSuccess && registerData) {
+      toast.success(registerData.message || "Signup successful.");
     }
-    if(registerError){
+    if (registerError) {
       toast.error(registerError.data.message || "Signup Failed");
     }
-    if(loginIsSuccess && loginData){
+    if (loginIsSuccess && loginData) {
       toast.success(loginData.message || "Login successful.");
       navigate("/");
     }
-    if(loginError){ 
+    if (loginError) {
       toast.error(loginError.data.message || "login Failed");
     }
   }, [
@@ -110,30 +110,42 @@ const Login = () => {
                   value={signupInput.name}
                   onChange={(e) => changeInputHandler(e, "signup")}
                   placeholder="Eg. patel"
-                  required="true"
+                  required
                 />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="username">Email</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
                   type="email"
                   name="email"
                   value={signupInput.email}
                   onChange={(e) => changeInputHandler(e, "signup")}
                   placeholder="Eg. patel@gmail.com"
-                  required="true"
+                  required
                 />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="username">Password</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   type="password"
                   name="password"
                   value={signupInput.password}
                   onChange={(e) => changeInputHandler(e, "signup")}
                   placeholder="Eg. xyz"
-                  required="true"
+                  required
                 />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="role">Role</Label>
+                <select
+                  name="role"
+                  value={signupInput.role}
+                  onChange={(e) => changeInputHandler(e, "signup")}
+                  required
+                >
+                  <option value="student">Student</option>
+                  <option value="instructor">Instructor</option>
+                </select>
               </div>
             </CardContent>
             <CardFooter>
@@ -163,25 +175,25 @@ const Login = () => {
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="space-y-1">
-                <Label htmlFor="current">Email</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
                   type="email"
                   name="email"
                   value={loginInput.email}
                   onChange={(e) => changeInputHandler(e, "login")}
                   placeholder="Eg. patel@gmail.com"
-                  required="true"
+                  required
                 />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="new">Password</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   type="password"
                   name="password"
                   value={loginInput.password}
                   onChange={(e) => changeInputHandler(e, "login")}
                   placeholder="Eg. xyz"
-                  required="true"
+                  required
                 />
               </div>
             </CardContent>
@@ -206,4 +218,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;

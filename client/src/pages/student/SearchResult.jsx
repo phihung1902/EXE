@@ -1,9 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 
 const SearchResult = ({ course }) => {
-   
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-300 py-4 gap-4">
       <Link
@@ -25,7 +26,10 @@ const SearchResult = ({ course }) => {
         </div>
       </Link>
       <div className="mt-4 md:mt-0 md:text-right w-full md:w-auto">
-        <h1 className="font-bold text-lg md:text-xl">₹{course.coursePrice}</h1>
+        <h1 className="font-bold text-lg md:text-xl">
+          <FontAwesomeIcon icon={faDollarSign} />
+          {course.coursePrice}
+        </h1>
       </div>
     </div>
   );
