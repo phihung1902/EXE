@@ -35,6 +35,14 @@ const Profile = () => {
       isSuccess,
     },
   ] = useUpdateUserMutation();
+  
+  useEffect(() => {
+    if (data?.user) {
+      setName(data.user.name || "");
+      setProfilePhoto(data.user.photoUrl || "");
+    }
+  }, [data]);
+
 
   console.log(data);
 
@@ -88,7 +96,7 @@ const Profile = () => {
             <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
               Name:
               <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
-                {user?.name}
+                {user?.name || "N/A"}
               </span>
             </h1>
           </div>
@@ -96,7 +104,7 @@ const Profile = () => {
             <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
               Email:
               <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
-                {user.email}
+                {user?.email || "N/A"}
               </span>
             </h1>
           </div>
@@ -104,7 +112,7 @@ const Profile = () => {
             <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
               Role:
               <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
-                {user.role.toUpperCase()}
+                {user?.role?.toUpperCase() || "N/A"}
               </span>
             </h1>
           </div>
