@@ -66,13 +66,19 @@ const Login = () => {
   useEffect(() => {
     if (registerIsSuccess && registerData) {
       toast.success(registerData.message || "Signup successful.");
+      if (registerData.token) {
+      localStorage.setItem("token", registerData.token);
+    }
     }
     if (registerError) {
       toast.error(registerError.data.message || "Signup Failed");
     }
     if (loginIsSuccess && loginData) {
       toast.success(loginData.message || "Login successful.");
+      if (loginData.token) {
+      localStorage.setItem("token", loginData.token);
       navigate("/");
+    }
     }
     if (loginError) {
       toast.error(loginError.data.message || "login Failed");
