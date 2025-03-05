@@ -59,19 +59,19 @@ export const authApi = createApi({
             }
         }),
         loadUser: builder.query({
-            query: () => ({
-                url:"profile",
-                method:"GET"
-            }),
-            async onQueryStarted(_, {queryFulfilled, dispatch}) {
-                try {
-                    const result = await queryFulfilled;
-                    dispatch(userLoggedIn({user:result.data.user}));
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        }),
+    query: () => {
+        const token = localStorage.getItem("token");
+        console.log("Token used for /profile:", token); 
+
+        return {
+            url: "profile",
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`, 
+            },
+        };
+    },
+}),
         updateUser: builder.mutation({
             query: (formData) => ({
                 url:"profile/update",
