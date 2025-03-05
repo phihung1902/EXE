@@ -18,5 +18,6 @@ export const generateToken = (res, user, message) => {
       success: true,
       message,
       user,
+      token,
     });
 };
