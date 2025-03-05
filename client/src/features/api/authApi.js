@@ -28,7 +28,8 @@ export const authApi = createApi({
             query: (inputData) => ({
                 url:"login",
                 method:"POST",
-                body:inputData
+                body:inputData,
+                credentials: "include",
             }),
             async onQueryStarted(_, {queryFulfilled, dispatch}) {
                 try {
