@@ -33,6 +33,7 @@ export const authApi = createApi({
             async onQueryStarted(_, {queryFulfilled, dispatch}) {
                 try {
                     const result = await queryFulfilled;
+                    localStorage.setItem("token", result.data.token);
                     dispatch(userLoggedIn({user:result.data.user}));
                 } catch (error) {
                     console.log(error);
