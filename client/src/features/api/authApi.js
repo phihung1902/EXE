@@ -67,9 +67,7 @@ export const authApi = createApi({
         return {
             url: "profile",
             method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`, 
-            },
+            credentials: "include",
         };
     },
 }),
