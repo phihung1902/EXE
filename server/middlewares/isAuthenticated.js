@@ -21,7 +21,11 @@ console.log("Cookies:", req.cookies);
     req.id = decode.userId;
     next();
   } catch (error) {
-    console.log(error);
+    console.log("JWT Verification Error:", error);
+    return res.status(401).json({
+      success: false,
+      message: "Authentication failed",
+    });
   }
 };
 export default isAuthenticated;
