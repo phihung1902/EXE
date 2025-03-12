@@ -6,7 +6,7 @@ export const purchaseApi = createApi({
   reducerPath: "purchaseApi",
   baseQuery: fetchBaseQuery({
     baseUrl: COURSE_PURCHASE_API,
-    credentials: "include",
+    credentials: "same-origin",
   }),
   endpoints: (builder) => ({
     createCheckoutSession: builder.mutation({
