@@ -9,51 +9,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useGetCourseDetailWithStatusQuery } from "@/features/api/purchaseApi";
 import { BadgeInfo, Lock, PlayCircle } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ReactPlayer from "react-player";
 import { useNavigate, useParams } from "react-router-dom";
-
-const API_URL = "https://exe-wifm.onrender.com/api/v1/purchase";
-const getToken = () => localStorage.getItem("token");
 
 const CourseDetail = () => {
   const params = useParams();
   const courseId = params.courseId;
   const navigate = useNavigate();
-  const [course, setCourse] = useState(null);
-  const [purchased, setPurchased] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, isError } =
+    useGetCourseDetailWithStatusQuery(courseId);
 
-  useEffect(() => {
-    const fetchCourseDetail = async () => {
-      try {
-        const response = await fetch(`${API_URL}/course/${courseId}/detail-with-status`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getToken()}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP Error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setCourse(data.course);
-        setPurchased(data.purchased);
-      } catch (err) {
-        console.error("Fetch Error:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCourseDetail();
-  }, [courseId]);
+  if (isLoading) return <h1>Loading...</h1>;
+  if (isError) return <h1>Failed to load course details</h1>;
 
-  if (loading) return <h1>Loading...</h1>;
-  if (error) return <h1>Failed to load course details</h1>;
+  const { course, purchased } = data;
+  console.log(purchased);
 
   const handleContinueCourse = () => {
     if (purchased) {
@@ -65,17 +38,19 @@ const CourseDetail = () => {
     <div className="space-y-5">
       <div className="bg-[#2D2F31] text-white">
         <div className="max-w-7xl mx-auto py-8 px-4 md:px-8 flex flex-col gap-2">
-          <h1 className="font-bold text-2xl md:text-3xl">{course?.courseTitle}</h1>
+          <h1 className="font-bold text-2xl md:text-3xl">
+            {course?.courseTitle}
+          </h1>
           <p className="text-base md:text-lg">{course?.subTitle}</p>
           <p>
-            Created By {" "}
+            Created By{" "}
             <span className="text-[#C0C4FC] underline italic">
               {course?.creator.name}
             </span>
           </p>
           <div className="flex items-center gap-2 text-sm">
             <BadgeInfo size={16} />
-            <p>Last updated {course?.createdAt?.split("T")[0]}</p>
+            <p>Last updated {course?.createdAt.split("T")[0]}</p>
           </div>
           <p>Students enrolled: {course?.enrolledStudents.length}</p>
         </div>
@@ -83,16 +58,23 @@ const CourseDetail = () => {
       <div className="max-w-7xl mx-auto my-5 px-4 md:px-8 flex flex-col lg:flex-row justify-between gap-10">
         <div className="w-full lg:w-1/2 space-y-5">
           <h1 className="font-bold text-xl md:text-2xl">Description</h1>
-          <p className="text-sm" dangerouslySetInnerHTML={{ __html: course.description }} />
+          <p
+            className="text-sm"
+            dangerouslySetInnerHTML={{ __html: course.description }}
+          />
           <Card>
             <CardHeader>
               <CardTitle>Course Content</CardTitle>
-              <CardDescription>{course.lectures.length} lectures</CardDescription>
+              <CardDescription>
+                {course.lectures.length} lectures
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {course.lectures.map((lecture, idx) => (
                 <div key={idx} className="flex items-center gap-3 text-sm">
-                  <span>{purchased ? <PlayCircle size={14} /> : <Lock size={14} />}</span>
+                  <span>
+                    {purchased ? <PlayCircle size={14} /> : <Lock size={14} />}
+                  </span>
                   <p>{lecture.lectureTitle}</p>
                 </div>
               ))}
