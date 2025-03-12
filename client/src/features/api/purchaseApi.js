@@ -71,8 +71,4 @@ export const getPurchasedCourses = async () => {
   }
 };
 
-export const {
-  useCreateCheckoutSessionMutation,
-  useGetCourseDetailWithStatusQuery,
-  useGetPurchasedCoursesQuery,
-} = purchaseApi;
+
